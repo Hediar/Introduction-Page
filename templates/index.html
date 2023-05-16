@@ -58,14 +58,14 @@
                                           <div class="card h-100">
                                             <img src="${image}" class="intro-img-top" onerror="this.src='https://cdn0.iconfinder.com/data/icons/pinpoint-notifocation/48/none-1024.png'" alt="..." />
                                             <div class="card-body">
-                                              <h5 class="card-title">이름 : ${name}</h5>
+                                              <h5 class="card-title"><strong>${name}</strong></h5>
                                               <p class="card-text">나이 : ${age}</p>
                                               </div>
                                               <div class="card-footer">
                                                 <small class="text-muted">
-                                                  <p class="intro-mbti intro-common">MBTI : ${mbti}</p>
-                                                  <p class="intro-hobby intro-common">${hobby}</p>
-                                                  <p class="intro-live intro-common">${live}</p>
+                                                  <p class="intro-mbti intro-common"><strong>MBTI :</strong> ${mbti}</p>
+                                                  <p class="intro-hobby intro-common"><strong>취미 :</strong>${hobby}</p>
+                                                  <p class="intro-live intro-common"><strong>거주지 :</strong>${live}</p>
                                                   <p class="intro-comment intro-common">
                                                 ${comment}
                                                 </p>
@@ -164,7 +164,7 @@
 
       .mypost {
         margin: 30px 30px 20px 30px;
-        display: ;
+        display: none;
       }
 
       .input-text > .form-control {
@@ -181,6 +181,9 @@
       .col:hover {
         transform: scale(1.03);
         cursor: pointer;
+      }
+      .card-footer {
+        display: none;
       }
 
       footer {
