@@ -19,7 +19,7 @@
 
     <script>
       $(document).ready(function () {
-        //listing();
+        show_intro();
         open_information();
       });
       // 모달 창
@@ -35,6 +35,78 @@
         $(".col").on("click", function () {
           $(this).find(".card-footer").toggle();
         });
+      }
+      // GET
+      function show_intro() {
+        fetch("/intro")
+          .then((res) => res.json())
+          .then((data) => {
+            let rows = data["result"];
+
+            $("#intro-box").empty();
+
+            rows.forEach((a) => {
+              let image = a["image"];
+              let name = a["name"];
+              let age = a["age"];
+              let mbti = a["mbti"];
+              let hobby = a["hobby"];
+              let live = a["live"];
+              let comment = a["comment"];
+
+              let temp_html = `<div class="col" onclick="open_information()">
+                                          <div class="card h-100">
+                                            <img src="${image}" class="intro-img-top" onerror="this.src='https://cdn0.iconfinder.com/data/icons/pinpoint-notifocation/48/none-1024.png'" alt="..." />
+                                            <div class="card-body">
+                                              <h5 class="card-title">이름 : ${name}</h5>
+                                              <p class="card-text">나이 : ${age}</p>
+                                              </div>
+                                              <div class="card-footer">
+                                                <small class="text-muted">
+                                                  <p class="intro-mbti intro-common">MBTI : ${mbti}</p>
+                                                  <p class="intro-hobby intro-common">${hobby}</p>
+                                                  <p class="intro-live intro-common">${live}</p>
+                                                  <p class="intro-comment intro-common">
+                                                ${comment}
+                                                </p>
+                                              </small>
+                                              <button onclick="more_view()" type="button" class="btn btn-more">
+                                                자세히 보기
+                                              </button>
+                                            </div>
+                                          </div>
+                                        </div>`;
+
+              $("#intro-box").append(temp_html);
+            });
+          });
+      }
+
+      //POST
+      function posting() {
+        let url = $("#url").val();
+        let name = $("#name").val();
+        let age = $("#age").val();
+        let hobby = $("#hobby").val();
+        let mbti = $("#mbti").val();
+        let address = $("#address").val();
+        let comment = $("#comment").val();
+
+        let formData = new FormData();
+        formData.append("url_give", url);
+        formData.append("name_give", name);
+        formData.append("age_give", age);
+        formData.append("hobby_give", hobby);
+        formData.append("mbti_give", mbti);
+        formData.append("address_give", address);
+        formData.append("comment_give", comment);
+
+        fetch("/intro", { method: "POST", body: formData })
+          .then((res) => res.json())
+          .then((data) => {
+            alert(data["msg"]);
+            window.location.reload();
+          });
       }
     </script>
 
@@ -137,7 +209,7 @@
     </div>
     <!-- 팀원 카드 -->
     <div class="team-cards">
-      <div class="row row-cols-1 row-cols-md-3 g-4">
+      <div class="row row-cols-1 row-cols-md-3 g-4" id="intro-box">
         <div class="col" onclick="open_information()">
           <div class="card h-100">
             <img
@@ -152,31 +224,6 @@
             </div>
             <div class="card-footer">
               <small class="text-muted">기타정보</small>
-            </div>
-          </div>
-        </div>
-        <div class="col">
-          <div class="card">
-            <img src="..." class="card-img-top" alt="..." />
-            <div class="card-body">
-              <h5 class="card-title">Card title</h5>
-              <p class="card-text">
-                This is a longer card with supporting text below as a natural
-                lead-in to additional content.
-              </p>
-            </div>
-          </div>
-        </div>
-        <div class="col">
-          <div class="card">
-            <img src="..." class="card-img-top" alt="..." />
-            <div class="card-body">
-              <h5 class="card-title">Card title</h5>
-              <p class="card-text">
-                This is a longer card with supporting text below as a natural
-                lead-in to additional content. This content is a little bit
-                longer.
-              </p>
             </div>
           </div>
         </div>
@@ -202,30 +249,35 @@
                 type="text"
                 placeholder="이름"
                 aria-label="default input example"
+                id="name"
               />
               <input
                 class="form-control"
                 type="text"
                 placeholder="나이"
                 aria-label="default input example"
+                id="age"
               />
               <input
                 class="form-control"
                 type="text"
                 placeholder="취미"
                 aria-label="default input example"
+                id="hobby"
               />
               <input
                 class="form-control"
                 type="text"
                 placeholder="MBTI"
                 aria-label="default input example"
+                id="mbti"
               />
               <input
                 class="form-control"
                 type="text"
                 placeholder="거주 지역"
                 aria-label="default input example"
+                id="address"
               />
             </div>
             <div class="form-floating">
