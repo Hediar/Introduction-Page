@@ -16,13 +16,25 @@
       integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
       crossorigin="anonymous"
     ></script>
-    <!-- 모달 창 -->
+
     <script>
+      $(document).ready(function () {
+        //listing();
+        open_information();
+      });
+      // 모달 창
       function open_box() {
         $(".modal").show();
       }
       function close_box() {
         $(".modal").hide();
+      }
+
+      // 카드를 클릭했을 때
+      function open_information() {
+        $(".col").on("click", function () {
+          $(this).find(".card-footer").toggle();
+        });
       }
     </script>
 
@@ -78,12 +90,25 @@
         margin-top: -50px;
       }
 
+      .mypost {
+        margin: 30px 30px 20px 30px;
+      }
+
       .input-text > .form-control {
         margin-bottom: 10px;
       }
 
       .team-cards {
         margin: 30px 30px 0 30px;
+      }
+      .col:hover {
+        transform: scale(1.03);
+        cursor: pointer;
+      }
+
+      footer {
+        color: whitesmoke;
+        margin: 30px 30px 20px 30px;
       }
     </style>
   </head>
@@ -113,29 +138,20 @@
     <!-- 팀원 카드 -->
     <div class="team-cards">
       <div class="row row-cols-1 row-cols-md-3 g-4">
-        <div class="col">
-          <div class="card">
-            <img src="..." class="card-img-top" alt="..." />
+        <div class="col" onclick="open_information()">
+          <div class="card h-100">
+            <img
+              src="..."
+              class="card-img-top"
+              onerror="this.src='https://cdn0.iconfinder.com/data/icons/pinpoint-notifocation/48/none-1024.png'"
+              alt="..."
+            />
             <div class="card-body">
-              <h5 class="card-title">Card title</h5>
-              <p class="card-text">
-                This is a longer card with supporting text below as a natural
-                lead-in to additional content. This content is a little bit
-                longer.
-              </p>
+              <h5 class="card-title">이름</h5>
+              <p class="card-text">코멘트 들어가는 곳</p>
             </div>
-          </div>
-        </div>
-        <div class="col">
-          <div class="card">
-            <img src="..." class="card-img-top" alt="..." />
-            <div class="card-body">
-              <h5 class="card-title">Card title</h5>
-              <p class="card-text">
-                This is a longer card with supporting text below as a natural
-                lead-in to additional content. This content is a little bit
-                longer.
-              </p>
+            <div class="card-footer">
+              <small class="text-muted">기타정보</small>
             </div>
           </div>
         </div>
@@ -236,5 +252,6 @@
         </div>
       </div>
     </div>
+    <footer>6조</footer>
   </body>
 </html>
