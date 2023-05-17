@@ -52,7 +52,7 @@
           let name = $(this).closest(".card").find(".card-title").text();
           let d_formData = new FormData();
           d_formData.append("delete_name", name);
-          console.log(name);
+          // console.log(name);
 
           fetch("/intro/delete", { method: "DELETE", body: d_formData })
             .then((res) => res.json())
@@ -142,7 +142,7 @@
 
     <!-- 파비콘 생성 -->
     <link
-      href="https://i.postimg.cc/T38kQqHN/6.jpg.ico"
+      href="https://i.postimg.cc/wM7drgxg/2023-05-17-175830.jpg"
       rel="chortcut icon"
       type="image/x-icon"
     />
