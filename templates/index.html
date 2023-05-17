@@ -83,7 +83,6 @@
                                                 </p>
                                               </small>
                                               <button onclick="more_view()" type="button" class="btn btn-more">
-                                                
                                               </button>
                                             </div>
                                           </div>
@@ -481,20 +480,19 @@
     </footer>
   </body>
   <script>
+    function handleClickLike() {
+      const like = document.querySelector(".like");
+      like.classList.toggle("liked");
+    }
+    // 엔터를 입력했을 때 저장되도록
     const info = document.querySelector("#post-box");
 
     function sendMyInfoByEnter(e) {
       if (e.key === "Enter" && !e.shiftKey) {
         posting();
-        e.preventDefault();
+        e.preventDefault(); // 이벤트의 기본 동작 중단(폼 제출)
       }
     }
-
     info.addEventListener("keypress", sendMyInfoByEnter);
-
-    function handleClickLike() {
-      const like = document.querySelector(".like");
-      like.classList.toggle("liked");
-    }
   </script>
 </html>

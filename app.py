@@ -1,10 +1,10 @@
 from flask import Flask, request, render_template, jsonify
-import requests
-from bs4 import BeautifulSoup
+
 app = Flask(__name__)
 from pymongo import MongoClient
 
-client = MongoClient()
+client = MongoClient('')
+
     
 db = client.dbsparta
 
@@ -44,55 +44,27 @@ def introduce():
     div = list(db.intro.find({}, {'_id': False, 'name': 1}))
     for i in div:
         name_list.append(i['name'])
+    if name_receive in name_list: # 입력받는 이름이 name_list에 있는 내용인지 확인
+        update_fields = {}  # 수정할 필드를 저장하기 위한 딕셔너리
 
-    for j in name_list: # db 내에 해당 이름이 있다면?
-        if j == name_receive:
-            if age_receive != '':
-                db.intro.update_one({'name':name_receive},
-                                {
-                                    '$set':{'age': age_receive},
-                                    })
-                return jsonify({'msg': '수정 완료!'})
-            
-            if img_receive != '':
-                db.intro.update_one({'name':name_receive},
-                                {
-                                    '$set':{'img': img_receive},
-                                    })
-                return jsonify({'msg': '수정 완료!'})
-            
-            if mbti_receive != '':
-                db.intro.update_one({'name':name_receive},
-                                    {
-                                        '$set':{'mbti': mbti_receive},
-                                        })
-                return jsonify({'msg': '수정 완료!'})
-            
-            if hobby_receive != '':
-                db.intro.update_one({'name':name_receive},
-                                    {
-                                        '$set':{'hobby': hobby_receive},
-                                        })
-                return jsonify({'msg': '수정 완료!'})
-            
-            if live_receive != '':
-                db.intro.update_one({'name':name_receive},
-                                    {
-                                        '$set':{'live': live_receive},
-                                        })
-                return jsonify({'msg': '수정 완료!'})
-            
-            if comment_receive != '':
-                db.intro.update_one({'name':name_receive},
-                                    {
-                                        '$set':{'comment': comment_receive}
-                                        })
-                return jsonify({'msg': '수정 완료!'})
-        else:
-            continue
-    # 팀원 추가 수행
-    db.intro.insert_one(doc)
-    return jsonify({'msg': '저장 완료!'})
+        if age_receive:
+            update_fields['age'] = age_receive
+        if img_receive:
+            update_fields['img'] = img_receive
+        if mbti_receive:
+            update_fields['mbti'] = mbti_receive
+        if hobby_receive:
+            update_fields['hobby'] = hobby_receive
+        if live_receive:
+            update_fields['live'] = live_receive
+        if comment_receive:
+            update_fields['comment'] = comment_receive
+
+        db.intro.update_one({'name': name_receive}, {'$set': update_fields})
+        return jsonify({'msg': '수정 완료!'})
+    else:
+        db.intro.insert_one(doc)
+        return jsonify({'msg': '저장 완료!'})
         
 
         
