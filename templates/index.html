@@ -16,8 +16,13 @@
       integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
       crossorigin="anonymous"
     ></script>
-    <!-- 모달 창 -->
+
     <script>
+      $(document).ready(function () {
+        show_intro();
+        open_information();
+      });
+      // 모달 창
       function open_box() {
         $(".modal").show();
       }
@@ -25,17 +30,59 @@
         $(".modal").hide();
       }
 
-      $(document).ready(function () {
-        show_order();
-      });
-      function show_order() {
+      // 카드를 클릭했을 때
+      function open_information() {
+        $(".col").on("click", function () {
+          $(this).find(".card-footer").toggle();
+        });
+      }
+      // GET
+      function show_intro() {
         fetch("/intro")
           .then((res) => res.json())
           .then((data) => {
-            console.log(data);
-            alert(data["msg"]);
+            let rows = data["result"];
+
+            $("#intro-box").empty();
+
+            rows.forEach((a) => {
+              let image = a["img"];
+              let name = a["name"];
+              let age = a["age"];
+              let mbti = a["mbti"];
+              let hobby = a["hobby"];
+              let live = a["live"];
+              let comment = a["comment"];
+
+              let temp_html = `<div class="col" onclick="open_information()">
+                                          <div class="card h-100">
+                                            <img src="${image}" class="intro-img-top" onerror="this.src='https://cdn0.iconfinder.com/data/icons/pinpoint-notifocation/48/none-1024.png'" alt="..." />
+                                            <div class="card-body">
+                                              <h5 class="card-title">이름 : ${name}</h5>
+                                              <p class="card-text">나이 : ${age}</p>
+                                              </div>
+                                              <div class="card-footer">
+                                                <small class="text-muted">
+                                                  <p class="intro-mbti intro-common">MBTI : ${mbti}</p>
+                                                  <p class="intro-hobby intro-common">${hobby}</p>
+                                                  <p class="intro-live intro-common">${live}</p>
+                                                  <p class="intro-comment intro-common">
+                                                ${comment}
+                                                </p>
+                                              </small>
+                                              <button onclick="more_view()" type="button" class="btn btn-more">
+                                                자세히 보기
+                                              </button>
+                                            </div>
+                                          </div>
+                                        </div>`;
+
+              $("#intro-box").append(temp_html);
+            });
           });
       }
+
+      //POST
       function posting() {
         let url = $("#url").val();
         let name = $("#name").val();
@@ -43,7 +90,7 @@
         let hobby = $("#hobby").val();
         let mbti = $("#mbti").val();
         let address = $("#address").val();
-        let comment = $("#comment").val();  
+        let comment = $("#comment").val();
 
         let formData = new FormData();
         formData.append("url_give", url);
@@ -66,6 +113,15 @@
     <title>팀 소개</title>
 
     <style>
+      /* font */
+      @import url("https://fonts.googleapis.com/css2?family=Nanum+Gothic&family=Nanum+Pen+Script&family=Song+Myung&display=swap");
+
+      * {
+        font-family: "Nanum Gothic", sans-serif;
+        font-family: "Nanum Pen Script", cursive;
+        font-family: "Song Myung", serif;
+      }
+
       :root {
         /* color */
         --clr-color-1: rgb(123, 104, 157);
@@ -105,14 +161,26 @@
         color: white;
         margin: 30px auto 0 auto;
       }
+      /* 버튼 굵어지게 */
+      .mytitle > button:hover {
+        border: 3px solid white;
+      }
 
       .modal {
         background: rgb(0, 0, 0, 0.7);
+      }
+      /* 모달 배경색 */
+      .modal-content{
+        background-color: #dcdcdc;
       }
 
       .modal-dialog {
         top: 39.5%;
         margin-top: -50px;
+      }
+
+      .mypost {
+        margin: 30px 30px 20px 30px;
       }
 
       .input-text > .form-control {
@@ -121,6 +189,15 @@
 
       .team-cards {
         margin: 30px 30px 0 30px;
+      }
+      .col:hover {
+        transform: scale(1.03);
+        cursor: pointer;
+      }
+
+      footer {
+        color: whitesmoke;
+        margin: 30px 30px 20px 30px;
       }
     </style>
   </head>
@@ -149,55 +226,21 @@
     </div>
     <!-- 팀원 카드 -->
     <div class="team-cards">
-      <div class="row row-cols-1 row-cols-md-3 g-4">
-        <div class="col">
-          <div class="card">
-            <img src="..." class="card-img-top" alt="..." />
+      <div class="row row-cols-1 row-cols-md-3 g-4" id="intro-box">
+        <div class="col" onclick="open_information()">
+          <div class="card h-100">
+            <img
+              src="..."
+              class="card-img-top"
+              onerror="this.src='https://cdn0.iconfinder.com/data/icons/pinpoint-notifocation/48/none-1024.png'"
+              alt="..."
+            />
             <div class="card-body">
-              <h5 class="card-title">Card title</h5>
-              <p class="card-text">
-                This is a longer card with supporting text below as a natural
-                lead-in to additional content. This content is a little bit
-                longer.
-              </p>
+              <h5 class="card-title">이름</h5>
+              <p class="card-text">코멘트 들어가는 곳</p>
             </div>
-          </div>
-        </div>
-        <div class="col">
-          <div class="card">
-            <img src="..." class="card-img-top" alt="..." />
-            <div class="card-body">
-              <h5 class="card-title">Card title</h5>
-              <p class="card-text">
-                This is a longer card with supporting text below as a natural
-                lead-in to additional content. This content is a little bit
-                longer.
-              </p>
-            </div>
-          </div>
-        </div>
-        <div class="col">
-          <div class="card">
-            <img src="..." class="card-img-top" alt="..." />
-            <div class="card-body">
-              <h5 class="card-title">Card title</h5>
-              <p class="card-text">
-                This is a longer card with supporting text below as a natural
-                lead-in to additional content.
-              </p>
-            </div>
-          </div>
-        </div>
-        <div class="col">
-          <div class="card">
-            <img src="..." class="card-img-top" alt="..." />
-            <div class="card-body">
-              <h5 class="card-title">Card title</h5>
-              <p class="card-text">
-                This is a longer card with supporting text below as a natural
-                lead-in to additional content. This content is a little bit
-                longer.
-              </p>
+            <div class="card-footer">
+              <small class="text-muted">기타정보</small>
             </div>
           </div>
         </div>
@@ -206,7 +249,7 @@
     <!-- 입력 창 -->
     <div class="modal" tabindex="-1">
       <div class="modal-dialog">
-        <div class="modal-content">
+        <div class="modal-content" >
           <div class="mypost" id="post-box">
             <div class="form-floating mb-3">
               <input
@@ -223,35 +266,35 @@
                 type="text"
                 placeholder="이름"
                 aria-label="default input example"
-                id = "name"
-                />
+                id="name"
+              />
               <input
                 class="form-control"
                 type="text"
                 placeholder="나이"
                 aria-label="default input example"
-                id = "age"
+                id="age"
               />
               <input
                 class="form-control"
                 type="text"
                 placeholder="취미"
                 aria-label="default input example"
-                id = "hobby"
+                id="hobby"
               />
               <input
                 class="form-control"
                 type="text"
                 placeholder="MBTI"
                 aria-label="default input example"
-                id = "mbti"
+                id="mbti"
               />
               <input
                 class="form-control"
                 type="text"
                 placeholder="거주 지역"
                 aria-label="default input example"
-                id = "address"
+                id="address"
               />
             </div>
             <div class="form-floating">
@@ -262,7 +305,7 @@
               ></textarea>
               <label for="floatingTextarea2">하고 싶은 말</label>
             </div>
-            <div class="mybtns">
+            <div class="mybtns" style="margin-top: 20px">
               <button onclick="posting()" type="button" class="btn btn-dark">
                 등록하기
               </button>
@@ -278,5 +321,6 @@
         </div>
       </div>
     </div>
+    <footer>6조</footer>
   </body>
 </html>
