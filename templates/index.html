@@ -7,104 +7,135 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css' integrity='sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==' crossorigin='anonymous'/>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
     crossorigin="anonymous"></script>
-  <!-- 모달 창 -->
-  <!-- ----------------------------------------------------------스크립트 시작-------------------------------------------------------------------------------- -->
+
   <script>
-        $(document).ready(function () {
-            show_intro();
-        });
-        function show_intro() {
-            fetch('/intro').then((res) => res.json()).then((data) => {
-
-              let rows = data['result']
-
-                $('#intro-box').empty()
-
-                rows.forEach((a)=>{
-                    let image = a['image']
-                    let name = a['name']
-                    let age = a['age']
-                    let mbti = a['mbti']
-                    let hobby = a['hobby']
-                    let live = a['live']
-                    let comment = a['comment']
-
-                    let temp_html = `<div class="col">
-                                          <div class="intro">
-                                            <img src="${image}" class="intro-img-top" alt="..." />
-                                            <div class="intro-body">
-                                              <h5 class="intro-name intro-common">이름 : ${name}</h5>
-                                              <p class="intro-age intro-common">나이 : ${age}</p>
-                                              <p class="intro-mbti intro-common">MBTI : ${mbti}</p>
-                                              <p class="intro-hobby intro-common">${hobby}</p>
-                                              <p class="intro-live intro-common">${live}</p>
-                                              <p class="intro-comment intro-common">
-                                                ${comment}
-                                              </p>
-                                              <button onclick="more_view()" type="button" class="btn btn-more">
-                                                자세히 보기
-                                              </button>
-                                            </div>
-                                          </div>
-                                        </div>`
-
-                    $('#intro-box').append(temp_html)
-                })
-            })
-        }
-
-        function posting() {
-            let image = $('#image').val()
-            let name = $('#name').val()
-            let age = $('#age').val()
-            let mbti = $('#mbti').val()
-            let hobby = $('#hobby').val()
-            let live = $('#live').val()
-            let comment = $('#comment').val()
-
-            let formData = new FormData();
-            formData.append("image_give",image);
-            formData.append("name_give", name);
-            formData.append("age_give", age);
-            formData.append("mbti_give", mbti);
-            formData.append("hobby_give", hobby);
-            formData.append("live_give", live);
-            formData.append("comment_give", comment);
-
-            fetch('/intro', { method: "POST", body: formData }).then((res) => res.json()).then((data) => {
-                console.log(data);
-                alert(data["msg"]);
-                window.location.reload()
-            });
-        }
-
+    $(document).ready(function () {
+      show_intro();
+      open_information();
+    });
+    // 모달 창
     function open_box() {
       $(".modal").show();
     }
-
     function close_box() {
       $(".modal").hide();
     }
 
-  </script>
-  <!-- ----------------------------------------------------------스크립트 끝-------------------------------------------------------------------------------- -->
-  <title>팀 소개</title>
-  <!-- ----------------------------------------------------------css 시작-------------------------------------------------------------------------------- -->
-  <style>
-    :root {
-      /* color */
-      --clr-color-1: white;
-      --clr-color-2: rgb(77, 40, 154);
-      --clr-color-3: white;
+    // 카드를 클릭했을 때
+    function open_information() {
+      $(".col").on("click", function () {
+        $(this).find(".card-footer").toggle();
+      });
+    }
+    // GET
+    function show_intro() {
+      fetch("/intro")
+        .then((res) => res.json())
+        .then((data) => {
+          let rows = data["result"];
+
+          $("#intro-box").empty();
+
+          rows.forEach((a) => {
+            let image = a["img"];
+            let name = a["name"];
+            let age = a["age"];
+            let mbti = a["mbti"];
+            let hobby = a["hobby"];
+            let live = a["live"];
+            let comment = a["comment"];
+
+            let temp_html = `<div class="col" onclick="open_information()">
+                                          <div class="card h-100">
+                                            <img src="${image}" class="intro-img-top" onerror="this.src='https://cdn0.iconfinder.com/data/icons/pinpoint-notifocation/48/none-1024.png'" alt="..." />
+                                            <div class="card-body">
+                                              <h5 class="card-title"><strong>${name}</strong></h5>
+                                              <p class="card-text">나이 : ${age}</p>
+                                              </div>
+                                              <div class="card-footer">
+                                                <small class="text-muted">
+                                                  <p class="intro-mbti intro-common"><strong>MBTI :</strong> ${mbti}</p>
+                                                  <p class="intro-hobby intro-common"><strong>취미 :</strong>${hobby}</p>
+                                                  <p class="intro-live intro-common"><strong>거주지 :</strong>${live}</p>
+                                                  <p class="intro-comment intro-common">
+                                                ${comment}
+                                                </p>
+                                              </small>
+                                              <button onclick="more_view()" type="button" class="btn btn-more">
+                                                
+                                              </button>
+                                            </div>
+                                          </div>
+                                        </div>`;
+
+            $("#intro-box").append(temp_html);
+          });
+        });
     }
 
-    .mytitle {
-      height: 300px;
-      width: 100%;
+    //POST
+    function posting() {
+      let url = $("#url").val();
+      let name = $("#name").val();
+      let age = $("#age").val();
+      let hobby = $("#hobby").val();
+      let mbti = $("#mbti").val();
+      let address = $("#address").val();
+      let comment = $("#comment").val();
+
+      let formData = new FormData();
+      formData.append("url_give", url);
+      formData.append("name_give", name);
+      formData.append("age_give", age);
+      formData.append("hobby_give", hobby);
+      formData.append("mbti_give", mbti);
+      formData.append("address_give", address);
+      formData.append("comment_give", comment);
+
+      fetch("/intro", { method: "POST", body: formData })
+        .then((res) => res.json())
+        .then((data) => {
+          alert(data["msg"]);
+          window.location.reload();
+        });
+    }
+  </script>
+
+  <title>팀 소개</title>
+
+  <style>
+    @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+
+    a,
+    p,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    span,
+    div {
+      font-family: 'Pretendard';
+      color: #111;
+    }
+
+    :root {
+      /* color */
+      --clr-color-1: #f9f9f9;
+      --clr-color-2: rgb(77, 40, 154);
+      --clr-color-3: #fff;
+    }
+    .navbar{
+      padding-top: 0px !important;
+      padding-bottom: 0px !important;
+    }
+    .title-back {
       background-color: var(--clr-color-2);
       background-image: linear-gradient(0deg,
           rgba(0, 0, 0, 0.3),
@@ -112,29 +143,86 @@
         url("");
       background-position: center;
       background-size: cover;
+    }
 
+    .mytitle {
+      height: 300px;
+      width: 1000px;
+      margin: 0 auto;
       color: white;
       font-size: 2rem;
       line-height: 45px;
-
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
+      position: relative;
+      left: 0;
+      bottom: 0;
+    }
+
+    .mytitle::after {
+      display: block;
+      content: "";
+      background: url(https://i.postimg.cc/j5tf87jm/Group-1-2.png) center center no-repeat;
+      width: 125px;
+      height: 125px;
+      border-radius: 100px;
+      position: absolute;
+      left: 0px;
+      bottom: -62px;
     }
 
     .mytitle>button {
-      width: 200px;
-      height: 50px;
-      font-size: 1.313rem;
+      font-size: 17px;
       border-radius: 80px;
       border: 1px solid white;
-
       background-color: transparent;
       color: white;
-      margin: 30px auto 0 auto;
+      margin: 4px auto 0 auto;
+      padding: 0px 39px;
+      line-height: 39px;
     }
-
+    .teamintro-wrap{
+      margin-top: 120px;
+    }
+    .team-intro {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    .team-intro h1{
+      font-size: 42px;
+      margin-bottom: 0px;
+      letter-spacing: -1.5px;
+    }
+    .team-intro h4{
+      font-size: 18px;
+      letter-spacing: -1px;
+      margin-bottom: 20px;
+    }
+    .intro-box{
+      border: solid 1px #ddd;
+      border-radius: 5px;
+      padding: 22px 18px;
+    }
+    .intro-box h4{
+      margin-bottom: 6px;
+    }
+    .intro-box h5{
+      font-size: 15px;
+      color: #666666;
+      margin-bottom: 15px;
+    }
+    .intro-box button{
+      border: solid 1px #eee;
+    padding: 8px 23px;
+    background: #111;
+    font-weight: 600;
+    color: white;
+    }
+    .fa-arrow-right{
+      margin-left: 7px;
+    }
     .modal {
       background: rgb(0, 0, 0, 0.7);
     }
@@ -144,127 +232,105 @@
       margin-top: -50px;
     }
 
+    .mypost {
+      margin: 30px 30px 20px 30px;
+    }
+
     .input-text>.form-control {
       margin-bottom: 10px;
     }
 
-    .team-intro {
-      max-width: 1400px;
-      margin: 50px auto;
+    .intro-img-top {
+      padding: 15px 15px 0px 15px;
+      height: 15rem;
+      object-fit: cover;
     }
-    .intro{
-      border-radius: 5px;
-      border: solid 1px #eee;
-      background-color: white;
-      padding: 10px;
+
+    .team-title h2 {
+      margin-bottom: 40px;
+      font-size: 26px;
+      font-weight: 600;
+      position: relative;
+      left: 0;
+      bottom: 0;
+      letter-spacing: -1px;
     }
-    .intro-img-top{
+
+    .team-title h2::after {
+      display: block;
+      content: "";
       width: 100%;
+      height: 2px;
+      position: absolute;
+      bottom: -8px;
+      background: linear-gradient(to right, #000000 0%, #000000 16%, #ddd 16%, #ddd 100%);
     }
-    .intro-common{
-      margin-bottom: 5px !important;
-      letter-spacing: -1px;
+
+    .team-cards {
+      max-width: 1000px;
+      margin: 40px auto;
     }
-    .intro-name{
-      padding: 15px 0px 0px 0px;
-      
+
+    .col:hover {
+      transform: scale(1.03);
+      cursor: pointer;
     }
-    .btn-more{
-      border: solid 1px #eee;
-      border-radius: 7px;
-      letter-spacing: -1px;
-      padding: 7px 25px;
+
+    .card-footer {
+      display: none;
+    }
+
+    footer {
+      color: whitesmoke;
+      margin: 30px 30px 20px 30px;
     }
   </style>
-  <!-- ----------------------------------------------------------css 끝-------------------------------------------------------------------------------- -->
 </head>
-<!-- ----------------------------------------------------------html 시작-------------------------------------------------------------------------------- -->
+
 <body style="background-color: var(--clr-color-1)">
   <!-- nav 창 -->
   <nav class="navbar bg-body-tertiary" style="background-color: var(--clr-color-3)">
     <div class="container-fluid">
       <a class="navbar-brand" href="#">
-        <img src="https://i.postimg.cc/f3kf2ZK3/logo-active.png" alt="Logo" width="100" height="24" class="d-inline-block align-text-top" />
+        <img src="" alt="Logo" width="100" height="24" class="d-inline-block align-text-top" />
       </a>
     </div>
   </nav>
   <!-- 배너 -->
-  <div class="mytitle">
-    <h1>팀 소개 페이지</h1>
-    <button onclick="open_box()">팀원 추가</button>
+  <div class="title-back">
+    <div class="mytitle">
+      <h1>팀 소개 페이지</h1>
+      <button onclick="open_box()">팀원 추가</button>
+    </div>
+  </div>
+  <div class="teamintro-wrap">
+    <div class="team-intro">
+      <h1>SixTeam</h1>
+      <h4>우리는 다양한 개발을 도전하고, 좋은 취업을 꿈꾸는 팀입니다.</h4>
+      <div class="intro-box">
+        <h4>팀원추가 프로젝트</h4>
+        <h5>자신의 사진, 이름, 나이, 취미, MBTP,거주지, 하고싶은 말을 적어서 팀원을 추가 해보세요.</h5>
+        <button onclick="open_box()">팀원 추가하기<i class="fa fa-thin fa-arrow-right"></i></button>
+      </div>
+    </div>
   </div>
   <!-- 팀원 카드 -->
-  <div class="team-intro">
-    <div class="row row-cols-1 row-cols-md-3 g-3" id="intro-box">
-      <div class="col">
-        <div class="intro">
-          <img src="..." class="intro-img-top" alt="..." />
-          <div class="intro-body">
-            <h5 class="intro-name">Card title</h5>
-            <p class="intro-age">
-              This is a longer card with supporting text below as a natural
-            </p>
-            <p class="intro-mbti">
-              This is a longer card with supporting text below as a natural
-            </p>
-            <p class="intro-hobby">
-              This is a longer card with supporting text below as a natural
-            </p>
-            <p class="intro-live">
-              This is a longer card with supporting text below as a natural
-            </p>
-            <p class="intro-comment">
-              This is a longer card with supporting text below as a natural
-            </p>
+  <div class="team-cards">
+    <div class="team-title">
+      <h2>Team Member</h2>
+    </div>
+    <div class="row row-cols-1 row-cols-md-3 g-4" id="intro-box">
+      <div class="col" onclick="open_information()">
+        <div class="card h-100">
+          <img src="..." class="card-img-top"
+            onerror="this.src='https://cdn0.iconfinder.com/data/icons/pinpoint-notifocation/48/none-1024.png'"
+            alt="..." />
+          <div class="card-body">
+            <h5 class="card-title">이름</h5>
+            <p class="card-text">코멘트 들어가는 곳</p>
           </div>
-        </div>
-      </div>
-      <div class="col">
-        <div class="intro">
-          <img src="..." class="intro-img-top" alt="..." />
-          <div class="intro-body">
-            <h5 class="intro-name">Card title</h5>
-            <p class="intro-age">
-              This is a longer card with supporting text below as a natural
-            </p>
-            <p class="intro-mbti">
-              This is a longer card with supporting text below as a natural
-            </p>
-            <p class="intro-hobby">
-              This is a longer card with supporting text below as a natural
-            </p>
-            <p class="intro-live">
-              This is a longer card with supporting text below as a natural
-            </p>
-            <p class="intro-comment">
-              This is a longer card with supporting text below as a natural
-            </p>
-          </div>
-        </div>
-      </div>
-      <div class="col">
-        <div class="intro">
-          <img src="..." class="intro-img-top" alt="..." />
-          <div class="intro-body">
-            <h5 class="intro-name">Card title</h5>
-            <p class="intro-age">
-              This is a longer card with supporting text below as a natural
-            </p>
-            <p class="intro-mbti">
-              This is a longer card with supporting text below as a natural
-            </p>
-            <p class="intro-hobby">
-              This is a longer card with supporting text below as a natural
-            </p>
-            <p class="intro-live">
-              This is a longer card with supporting text below as a natural
-            </p>
-            <p class="intro-comment">
-              This is a longer card with supporting text below as a natural
-            </p>
-            <button onclick="more_view()" type="button" class="btn btn-more">
-              자세히 보기
-            </button>
+          <div class="card-footer">
+            <small class="text-muted">기타정보</small>
           </div>
         </div>
       </div>
@@ -276,21 +342,22 @@
       <div class="modal-content">
         <div class="mypost" id="post-box">
           <div class="form-floating mb-3">
-            <input id="image" type="email" class="form-control" placeholder="name@example.com" />
+            <input id="url" type="email" class="form-control" placeholder="name@example.com" />
             <label>사진 URL</label>
           </div>
           <div class="input-text">
-            <input id="name" class="form-control" type="text" placeholder="이름" aria-label="default input example" />
-            <input id="age" class="form-control" type="text" placeholder="나이" aria-label="default input example" />
-            <input id="hobby" class="form-control" type="text" placeholder="취미" aria-label="default input example" />
-            <input id="mbti" class="form-control" type="text" placeholder="MBTI" aria-label="default input example" />
-            <input id="live" class="form-control" type="text" placeholder="거주 지역" aria-label="default input example" />
+            <input class="form-control" type="text" placeholder="이름" aria-label="default input example" id="name" />
+            <input class="form-control" type="text" placeholder="나이" aria-label="default input example" id="age" />
+            <input class="form-control" type="text" placeholder="취미" aria-label="default input example" id="hobby" />
+            <input class="form-control" type="text" placeholder="MBTI" aria-label="default input example" id="mbti" />
+            <input class="form-control" type="text" placeholder="거주 지역" aria-label="default input example"
+              id="address" />
           </div>
           <div class="form-floating">
             <textarea id="comment" class="form-control" placeholder="Leave a comment here"></textarea>
             <label for="floatingTextarea2">하고 싶은 말</label>
           </div>
-          <div class="mybtns">
+          <div class="mybtns" style="margin-top: 20px">
             <button onclick="posting()" type="button" class="btn btn-dark">
               등록하기
             </button>
@@ -302,6 +369,7 @@
       </div>
     </div>
   </div>
+  <footer>6조</footer>
 </body>
-<!-- ----------------------------------------------------------html 끝-------------------------------------------------------------------------------- -->
+
 </html>
