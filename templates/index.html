@@ -26,6 +26,9 @@
     <script>
       $(document).ready(function () {
         show_intro();
+        setTimeout(() => {
+          delete_card();
+        }, 2000); // 2초
         open_information();
       });
       // 모달 창
@@ -41,6 +44,22 @@
         $(".col").on("click", function () {
           $(this).find(".card-footer").toggle();
           // $("#intro-img-top").css("height");
+        });
+      }
+      // 삭제 버튼 클릭했을 때
+      function delete_card() {
+        $(".deletebtn").on("click", function () {
+          let name = $(this).closest(".card").find(".card-title").text();
+          let d_formData = new FormData();
+          d_formData.append("delete_name", name);
+          console.log(name);
+
+          fetch("/intro/delete", { method: "DELETE", body: d_formData })
+            .then((res) => res.json())
+            .then((data) => {
+              alert(data["msg"]);
+              window.location.reload();
+            });
         });
       }
 

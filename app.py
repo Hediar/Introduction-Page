@@ -1,4 +1,5 @@
 from flask import Flask, request, render_template, jsonify
+import sys
 
 app = Flask(__name__)
 from pymongo import MongoClient
@@ -7,7 +8,7 @@ client = MongoClient('')
 
     
 db = client.dbsparta
-
+sys.stdout.reconfigure(encoding='utf-8')
 
 Flask
 app = Flask(__name__)
@@ -67,12 +68,18 @@ def introduce():
         return jsonify({'msg': '저장 완료!'})
         
 
-        
 
 @app.route("/intro", methods=["GET"])
 def intro_get():
     intro_data = list(db.intro.find({},{'_id':False}))
     return jsonify({'result':intro_data})
+
+@app.route("/intro/delete", methods=["DELETE"])
+def delete_intro():
+    delete_name = request.form.get('delete_name')
+    db.intro.delete_one({'name':delete_name})
+    return jsonify({'msg':'삭제 완료!'})
+
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)
