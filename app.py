@@ -4,9 +4,8 @@ from bs4 import BeautifulSoup
 app = Flask(__name__)
 from pymongo import MongoClient
 
-client = MongoClient(
-    )
-
+client = MongoClient()
+    
 db = client.dbsparta
 
 

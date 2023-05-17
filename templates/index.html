@@ -5,6 +5,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+      crossorigin="anonymous"
+    />
+    <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
       rel="stylesheet"
       integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
@@ -34,8 +40,10 @@
       function open_information() {
         $(".col").on("click", function () {
           $(this).find(".card-footer").toggle();
+          // $("#intro-img-top").css("height");
         });
       }
+
       // GET
       function show_intro() {
         fetch("/intro")
@@ -56,6 +64,10 @@
 
               let temp_html = `<div class="col" onclick="open_information()">
                                           <div class="card h-100">
+                                            <!-- 삭제버튼만들기 -->
+                                            <div class="delete">
+                                            <div class = "deletebtn">
+                                            <button type="button" class="btn btn-outline-light" >X</button></div></div>
                                             <img src="${image}" class="intro-img-top" onerror="this.src='https://cdn0.iconfinder.com/data/icons/pinpoint-notifocation/48/none-1024.png'" alt="..." />
                                             <div class="card-body">
                                               <h5 class="card-title"><strong>${name}</strong></h5>
@@ -110,18 +122,45 @@
       }
     </script>
 
+    <!-- 파비콘 생성 -->
+    <link
+      href="https://i.postimg.cc/T38kQqHN/6.jpg.ico"
+      rel="chortcut icon"
+      type="image/x-icon"
+    />
     <title>팀 소개</title>
 
     <style>
+      @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css");
+
+      a,
+      p,
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6,
+      span,
+      div {
+        font-family: "Pretendard";
+        color: #111;
+      }
+
       :root {
         /* color */
-        --clr-color-1: rgb(123, 104, 157);
+        --clr-color-1: #f9f9f9;
         --clr-color-2: rgb(77, 40, 154);
-        --clr-color-3: rgb(211, 201, 222);
+        --clr-color-3: #fff;
       }
-      .mytitle {
-        height: 300px;
-        width: 100%;
+      .navbar {
+        padding-top: 0px !important;
+        padding-bottom: 0px !important;
+      }
+      .container-fluid {
+        height: 40px;
+      }
+      .title-back {
         background-color: var(--clr-color-2);
         background-image: linear-gradient(
             0deg,
@@ -131,28 +170,95 @@
           url("");
         background-position: center;
         background-size: cover;
+      }
 
+      .mytitle {
+        height: 300px;
+        width: 1000px;
+        margin: 0 auto;
         color: white;
         font-size: 2rem;
         line-height: 45px;
-
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
+        position: relative;
+        left: 0;
+        bottom: 0;
       }
+
+      .mytitle::after {
+        display: block;
+        content: "";
+        background: url(https://i.postimg.cc/j5tf87jm/Group-1-2.png) center
+          center no-repeat;
+        width: 125px;
+        height: 125px;
+        border-radius: 100px;
+        position: absolute;
+        left: 0px;
+        bottom: -62px;
+      }
+
       .mytitle > button {
-        width: 200px;
-        height: 50px;
-        font-size: 1.313rem;
+        font-size: 17px;
         border-radius: 80px;
         border: 1px solid white;
-
         background-color: transparent;
         color: white;
-        margin: 30px auto 0 auto;
+        margin: 4px auto 0 auto;
+        padding: 0px 39px;
+        line-height: 39px;
+      }
+      /* 카드 삭제버튼 버튼을 오른쪽에 놓고싶어요*/
+      .deletebtn {
+        background-color: transparent;
+        width: 40px;
+        border-radius: 8px;
+        float: right;
       }
 
+      .teamintro-wrap {
+        margin-top: 120px;
+      }
+      .team-intro {
+        max-width: 1000px;
+        margin: 0 auto;
+      }
+      .team-intro h1 {
+        font-size: 42px;
+        margin-bottom: 0px;
+        letter-spacing: -1.5px;
+      }
+      .team-intro h4 {
+        font-size: 18px;
+        letter-spacing: -1px;
+        margin-bottom: 20px;
+      }
+      .intro-box {
+        border: solid 1px #ddd;
+        border-radius: 5px;
+        padding: 22px 18px;
+      }
+      .intro-box h4 {
+        margin-bottom: 6px;
+      }
+      .intro-box h5 {
+        font-size: 15px;
+        color: #666666;
+        margin-bottom: 15px;
+      }
+      .intro-box button {
+        border: solid 1px #eee;
+        padding: 8px 23px;
+        background: #111;
+        font-weight: 600;
+        color: white;
+      }
+      .fa-arrow-right {
+        margin-left: 7px;
+      }
       .modal {
         background: rgb(0, 0, 0, 0.7);
       }
@@ -169,18 +275,49 @@
       .input-text > .form-control {
         margin-bottom: 10px;
       }
+
       .intro-img-top {
+        padding: 15px 15px 0px 15px;
         height: 15rem;
         object-fit: cover;
       }
 
-      .team-cards {
-        margin: 30px 30px 0 30px;
+      .team-title h2 {
+        margin-bottom: 40px;
+        font-size: 26px;
+        font-weight: 600;
+        position: relative;
+        left: 0;
+        bottom: 0;
+        letter-spacing: -1px;
       }
+
+      .team-title h2::after {
+        display: block;
+        content: "";
+        width: 100%;
+        height: 2px;
+        position: absolute;
+        bottom: -8px;
+        background: linear-gradient(
+          to right,
+          #000000 0%,
+          #000000 16%,
+          #ddd 16%,
+          #ddd 100%
+        );
+      }
+
+      .team-cards {
+        max-width: 1000px;
+        margin: 40px auto;
+      }
+
       .col:hover {
         transform: scale(1.03);
         cursor: pointer;
       }
+
       .card-footer {
         display: none;
       }
@@ -188,6 +325,23 @@
       footer {
         color: whitesmoke;
         margin: 30px 30px 20px 30px;
+      }
+      .like {
+        background-color: rgb(211, 201, 222);
+        border-radius: 16px;
+        border: none;
+        color: #3f3636;
+        font-size: 24px;
+        padding: 8px 16px;
+        transition: color 0.2s ease, margin-top 0.1s ease;
+      }
+
+      .like:active {
+        margin-top: 3px;
+      }
+
+      .liked {
+        color: #e13b57;
       }
     </style>
   </head>
@@ -198,21 +352,31 @@
       style="background-color: var(--clr-color-3)"
     >
       <div class="container-fluid">
-        <a class="navbar-brand" href="#">
-          <img
-            src=""
-            alt="Logo"
-            width="100"
-            height="24"
-            class="d-inline-block align-text-top"
-          />
-        </a>
+        <a class="navbar-brand" href="#"> </a>
       </div>
     </nav>
     <!-- 배너 -->
-    <div class="mytitle">
-      <h1>팀 소개 페이지</h1>
-      <button onclick="open_box()">팀원 추가</button>
+    <div class="title-back">
+      <div class="mytitle">
+        <h1 style="color: white">팀 소개 페이지</h1>
+        <!-- <button onclick="open_box()">팀원 추가</button> -->
+      </div>
+    </div>
+    <div class="teamintro-wrap">
+      <div class="team-intro">
+        <h1>SixTeam</h1>
+        <h4>우리는 다양한 개발을 도전하고, 좋은 취업을 꿈꾸는 팀입니다.</h4>
+        <div class="intro-box">
+          <h4>팀원추가 프로젝트</h4>
+          <h5>
+            자신의 사진, 이름, 나이, 취미, MBTI,거주지, 하고싶은 말을 적어서
+            팀원을 추가 해보세요.
+          </h5>
+          <button onclick="open_box()">
+            팀원 추가하기<i class="fa fa-thin fa-arrow-right"></i>
+          </button>
+        </div>
+      </div>
     </div>
     <!-- 팀원 카드 -->
     <div class="team-cards">
@@ -311,6 +475,26 @@
         </div>
       </div>
     </div>
-    <footer>6조</footer>
+    <footer style="color: rgb(211, 201, 222)">
+      <button class="like" onclick="handleClickLike()">♥</button>
+      이 페이지가 마음에 드셨다면 좋아요를 눌러주세요
+    </footer>
   </body>
+  <script>
+    const info = document.querySelector("#post-box");
+
+    function sendMyInfoByEnter(e) {
+      if (e.key === "Enter" && !e.shiftKey) {
+        posting();
+        e.preventDefault();
+      }
+    }
+
+    info.addEventListener("keypress", sendMyInfoByEnter);
+
+    function handleClickLike() {
+      const like = document.querySelector(".like");
+      like.classList.toggle("liked");
+    }
+  </script>
 </html>
