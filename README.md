@@ -43,6 +43,7 @@
 | 메인 페이지  | 입력 페이지  |
 | :-------------------------------------------: | :------------: |
 |  <img width="400" src="https://github.com/Hediar/Introduction-Page/assets/72387948/3f147db7-20b0-4b7f-806a-ece3ba942cfe"/> | <img width="400" src="https://github.com/Hediar/Introduction-Page/assets/72387948/fef948ba-bba0-4cc5-9858-d8138bf02c0c"/> |
+| <img width="400" src="https://github.com/Hediar/Introduction-Page/assets/72387948/7b2e0573-703b-463d-863a-89d41c7875af"/> |
 
 ---
 ## 주요 기능 📦
