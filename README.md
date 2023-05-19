@@ -16,6 +16,8 @@
 
 내일배움캠프에서 수행한 미니 프로젝트이며, 팀원을 소개하는 페이지입니다. 
 
+SA Notion : https://deeply-silence-9a4.notion.site/A-6-S-A-29de33c5802c468582229016e481e0f9
+
 #### 개요도 
 ![내배캠_미니프로젝트-001](https://github.com/Hediar/Introduction-Page/assets/72387948/4ebd8ff1-ef18-459e-97a1-bfa8f8a47ca9)
 
